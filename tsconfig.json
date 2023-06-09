@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -18,7 +19,9 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"],
+      
     }
   },
   "include": [
@@ -27,7 +30,9 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
-  ],
+    "**/*.mjs",
+    "src",
+    "src/custom.d.ts",
+    "tailwind.config.js"  ],
   "exclude": ["node_modules"]
 }
