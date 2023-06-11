@@ -5,7 +5,7 @@ export function FullSized(props: ComponentProps<"svg">) {
     <svg
       viewBox="0 0 309 92"
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width || 290}
+      width={props.width || 309}
       fill="none"
       className={props.className}
       style={props.style}

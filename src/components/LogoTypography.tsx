@@ -50,9 +50,9 @@ export function LogoTypography(props: ComponentProps<"svg">) {
       <path
         d="M3.02554 48.1712L3.02554 2.70113L26.8728 2.70112M5.08864 25.9783H21.3555"
         stroke="currentColor"
-        stroke-width="5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

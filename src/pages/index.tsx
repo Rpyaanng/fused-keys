@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MainLayout } from "~/components/MainLayout";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Logo } from "~/components/Logo";
-import { LogoTypography1 } from "~/components/LogoTypography1";
+import { LogoTypography } from "~/components/LogoTypography";
 
 import { api } from "~/utils/api";
 

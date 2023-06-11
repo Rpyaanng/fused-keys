@@ -6,7 +6,7 @@ export function Tenkeyless(props: ComponentProps<"svg">) {
       viewBox="0 0 246 93"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width || 250}
+      width={props.width || 246}
       className={props.className}
       style={props.style}
     >

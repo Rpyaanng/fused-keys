@@ -12,6 +12,7 @@ import { Tenkeyless } from "~/components/svg/keyboards/Tenkeyless";
 import { SixtyFive } from "~/components/svg/keyboards/SixtyFive";
 import { Toggle } from "~/components/ui/toggle";
 import { Item, type ItemInterface } from "~/components/Item";
+import { type MaterialInterface, Material } from "~/components/Material";
 
 const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
   const [currentStep, setCurrentStep] = react.useState(0);
@@ -20,7 +21,6 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
 
   const onSizeSelect = (id: number) => {
     setSizeSelected(id);
-    console.log(id);
   };
 
   const keyboardSizes: ItemInterface[] = [
@@ -29,23 +29,62 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       title: "SixtyFive",
       subtitle: "65%",
       features: ["No function row", "68 keys"],
-      display: <SixtyFive />,
+      display: <SixtyFive className="h-16" />,
     },
     {
       id: 2,
       title: "Tenkeyless(TKL)",
       subtitle: "80%",
       features: ["No Numpad", "89 keys"],
-      display: <Tenkeyless />,
+      display: <Tenkeyless className="h-20" />,
     },
     {
       id: 3,
       title: "Full Sized",
       subtitle: "100%",
       features: ["Numpad, modifiers & arrow cluster present", "104 keys"],
-      display: <FullSized />,
+      display: <FullSized className="h-20" />,
     },
   ];
+
+  const materials: MaterialInterface[] = [
+    {
+      id: 1,
+      title: "Ruby Red",
+      subtitle: "65%",
+      features: ["No function row", "68 keys"],
+      display: "#bd1515",
+    },
+    {
+      id: 2,
+      title: "Saphire Blue",
+      subtitle: "80%",
+      features: ["No Numpad", "89 keys"],
+      display: "#0000FF",
+    },
+    {
+      id: 3,
+      title: "Topaz Yellow",
+      subtitle: "100%",
+      features: ["Numpad, modifiers & arrow cluster present", "104 keys"],
+      display: "#FFFF00",
+    },
+  ];
+
+  const parts: { name: string; materials: MaterialInterface[]; id: number }[] =
+    [
+      {
+        name: "Top Plate",
+        materials: materials,
+        id: 1,
+      },
+      {
+        name: "Bottom Plate",
+        materials: materials,
+        id: 2,
+      },
+      { name: "Back Plate", materials: materials, id: 3 },
+    ];
 
   const stepList: {
     title: string;
@@ -56,7 +95,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       title: "Size",
       description: "Choose the size of your keyboard:",
       action: (
-        <div className="sm:grid-col-1 grid gap-3 p-5 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-3 p-5">
           {keyboardSizes.map((keyboardSize, j) => {
             return (
               <Item
@@ -74,7 +113,36 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       title: "Materials",
       description:
         "For sighted users to preview content available behind a link.",
-      action: null,
+      action: (
+        <div className="m-2 grid grid-cols-2">
+          <div className="m-3">
+            <div className="rounded-md bg-muted p-5">
+              {parts.map((part) => {
+                return (
+                  <div key={part.id}>
+                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                      {part.name}
+                    </h3>
+                    <div className="mt-3 flex gap-2">
+                      {materials.map((material, j) => {
+                        return (
+                          <Material
+                            key={`${part.id}-${material.title}-${j}`}
+                            material={material}
+                            selected={sizeSelected === material.id}
+                            onSelect={() => setSizeSelected(material.id)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="m-3 bg-muted">Preview</div>
+        </div>
+      ),
     },
     {
       title: "Switches",
@@ -93,8 +161,8 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <MainLayout>
-      <div className="sticky top-0 bg-background p-3 md:mt-9">
-        <div className="">
+      <div className="sticky top-0 bg-background p-0 sm:p-3">
+        <div>
           Steps: {currentStep + 1} / {steps}
           <Progress value={(currentStep / (steps - 1)) * 100} />
           <div className="my-2 flex justify-between">
@@ -115,7 +183,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
         </div>
         <Separator />
       </div>
-      <ul className="h-screen">
+      <ul>
         {stepList.map((step, i) => {
           return (
             <>

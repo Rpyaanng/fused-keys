@@ -19,15 +19,15 @@ export const Item = (props: {
       onClick={() => props.onSelect(props.item.id)}
       className={
         props.selected
-          ? "border-solidborder-pop grid rounded-sm border-4 border-pop bg-muted p-2 md:grid-cols-1"
-          : "grid rounded-sm border-4 border-solid border-transparent bg-muted p-2 hover:border-pop md:grid-cols-1"
+          ? "border-solidborder-pop w-82 grid rounded-sm border-4 border-pop bg-muted p-2 md:grid-cols-1"
+          : "  grid rounded-sm border-4 border-solid border-transparent bg-muted p-2 hover:border-pop md:grid-cols-1"
       }
     >
       <div className="flex justify-between border-b">
-        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+        <h2 className="scroll-m-20 pb-2 text-xl font-semibold tracking-tight transition-colors first:mt-0">
           {props.item.title}
         </h2>
-        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+        <h2 className="scroll-m-20 pb-2 text-xl font-semibold tracking-tight transition-colors first:mt-0">
           {props.item.subtitle}
         </h2>
       </div>

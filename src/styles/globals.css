@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --font-sans: "__Inter_0ec1f4","__Inter_Fallback_0ec1f4";
+
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 

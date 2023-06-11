@@ -6,7 +6,7 @@ export function SixtyFive(props: ComponentProps<"svg">) {
       viewBox="0 0 223 76"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width || 220}
+      width={props.width || 223}
       className={props.className}
       style={props.style}
     >

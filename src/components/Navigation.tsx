@@ -14,14 +14,16 @@ import {
   navigationMenuTriggerStyle,
   navigationMenuLogoStyle,
 } from "@/components/ui/navigation-menu";
+import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { Icons } from "@/components/icons";
 import { Logo } from "./Logo";
-import { LogoTypography1 } from "./LogoTypography1";
+import { LogoTypography } from "./LogoTypography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ThemeToggler from "./ThemeToggler";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, User } from "lucide-react";
+import { Button } from "./ui/button";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -70,10 +72,10 @@ export function Navigation() {
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuLogoStyle()}>
-                <LogoTypography1
-                  width={125}
-                  className="transition-transform duration-200 ease-in-out hover:scale-125"
-                />
+                <div className="flex">
+                  <Logo className="mx-2" />
+                  <LogoTypography />
+                </div>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
@@ -160,31 +162,57 @@ export function Navigation() {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger>
-              <Avatar className="m-2 h-7 w-7">
-                <AvatarImage src={sessionData?.user.image} alt="@shadcn" />
+              <Avatar className="h-7 w-7">
+                {sessionData && (
+                  <AvatarImage
+                    src={sessionData.user.image}
+                    alt={`${sessionData.user.name || "user's"} profile picture`}
+                  />
+                )}
                 <AvatarFallback>?</AvatarFallback>
               </Avatar>
-              {sessionData ? sessionData.user.name : "Sign in"}
+              <p className="w-24">
+                {sessionData ? sessionData.user.name : "Sign in"}
+              </p>
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="w-max">
-              <ul className=" grid w-32 gap-3">
+            <NavigationMenuContent className="w-7">
+              <ul className="grid w-36 gap-3">
                 <ListItem className="">
-                  <button
-                    className=""
-                    onClick={
-                      sessionData ? () => void signOut() : () => void signIn()
-                    }
-                  >
-                    {sessionData ? (
+                  {sessionData ? (
+                    <div>
                       <div className="grid grid-cols-2">
-                        <LogOut /> Sign Out
+                        <div className="flex">
+                          <User className="mr-2 w-4 text-primary" />
+                        </div>
+
+                        <p className="">Profile</p>
                       </div>
-                    ) : (
+                      <Button
+                        className="grid grid-cols-2"
+                        onClick={
+                   
+                            () => void signOut()
+                        
+                        }
+                      >
+                        <div className="flex">
+                          <LogOut className="mr-2 w-4 text-primary" />
+                        </div>
+                        <p className="">Sign Out</p>
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button  onClick={
+                      () => void signOut()}
+                      >
                       <div className="grid grid-cols-2">
-                        <LogIn /> Sign In
+                        <div className="flex">
+                          <LogIn className="mr-2 w-4 text-primary" />
+                        </div>
+                        <p>Sign In</p>
                       </div>
-                    )}
-                  </button>
+                    </Button>
+                  )}
                 </ListItem>
               </ul>
             </NavigationMenuContent>
