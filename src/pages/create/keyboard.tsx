@@ -116,7 +116,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       action: (
         <div className="m-2 grid grid-cols-2">
           <div className="m-3">
-            <div className="rounded-md bg-muted p-5">
+            <div className="rounded-md bg-muted p-5 gap-3">
               {parts.map((part) => {
                 return (
                   <div key={part.id}>
@@ -140,7 +140,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
               })}
             </div>
           </div>
-          <div className="m-3 bg-muted">Preview</div>
+          <div className="m-3 bg-muted aspect-square">Preview</div>
         </div>
       ),
     },
