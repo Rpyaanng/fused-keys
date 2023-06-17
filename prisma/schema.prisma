@@ -43,15 +43,58 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Keyboard {
+model Product{
   id          String                @id @default(cuid())
   name        String
   description String?
   image       String?
   createdAt   DateTime              @default(now())
   updatedAt   DateTime              @updatedAt
-  materials   MaterialsOnKeyboard[]
+  category    Category              @relation(fields: [categoryId], references: [id])
+  components  Component[]
+  Addons      AddOn[]               @relation("AddOns")
+ }
+
+model AddOn {
+  id          String                @id @default(cuid())
+  name        String
+  description String?
   basePrice   Decimal?
+  image       String?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  products    Product[]             @relation("AddOns")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[] 
+}
+
+model Component {
+  id          String                @id @default(cuid())
+  name        String
+  description String?   
+  image       String?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  product     Product               @relation(fields: [productId], references: [id])
+  materials   MaterialsOnComponent[]
+}
+
+model Order {
+  id          String                @id @default(cuid())
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  user        User                  @relation(fields: [userId], references: [id])
+  userId      String
+  products    Product[]            @relation(references: [id])
+  addons      AddOn[]              @relation(references: [id])
+  subtotal    Decimal?
+  discount    Decimal?
 }
 
 model Material {
@@ -62,18 +105,18 @@ model Material {
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   basePrice           Decimal?
-  MaterialsOnKeyboard MaterialsOnKeyboard[]
 }
 
-model MaterialsOnKeyboard {
-  id         String   @id @default(cuid())
-  keyboardId String
-  materialId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  keyboard   Keyboard @relation(fields: [keyboardId], references: [id])
-  material   Material @relation(fields: [materialId], references: [id])
+model MaterialsOnComponent {
+  id                  String                @id @default(cuid())
+  material            Material              @relation(fields: [materialId], references: [id])
+  component           Component             @relation(fields: [componentId], references: [id])
+  price               Decimal?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 }
+
+
 
 model User {
   id            String    @id @default(cuid())

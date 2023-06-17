@@ -15,27 +15,21 @@ import { type MaterialInterface, Material } from "~/components/Material";
 import { useRef, useEffect } from "react";
 import { BoxGeometry, Mesh, MeshBasicMaterial, PointLight } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
 import { Suspense } from "react";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import { useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { materials } from "~/Materials/materials";
-import { MeshPhongMaterial, Color } from "three";
 import * as THREE from "three";
+import { Dict } from "@trpc/server";
 const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
   const [currentStep, setCurrentStep] = react.useState(0);
   const [sizeSelected, setSizeSelected] = react.useState(0);
-  const [materialSelected, setMaterialSelected] = react.useState({
-    "Material.001": "bd1515",
-    "Material.002": "0000FF",
-    "Material.003": "FFFF00",
-  });
-
-  react.useEffect(() => {
-    console.log(materialSelected);
-  }, [materialSelected]);
+  const [materialSelected, setMaterialSelected] = react.useState([
+    "bd1515",
+    "0000FF",
+    "FFFF00",
+  ]);
 
   const keyboardSizes: ItemInterface[] = [
     {
@@ -85,49 +79,52 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
     },
   ];
 
-  const parts: { name: string; materials: MaterialInterface[]; id: string }[] =
+  const parts: { materialName: string, name: string; materials: MaterialInterface[]; id: number }[] =
     [
       {
-        name: "Material.001",
+        materialName: "Material.001",
         materials: materials,
-        id: "TopPlate",
+        name: "Cube", 
+        id: 0,
       },
       {
-        name: "Material.002",
+        materialName: "Material.002",
         materials: materials,
-        id: "BottomPlate",
+        name: "Cube001",
+        id: 1,
       },
       {
-        name: "Material.003",
+        materialName: "Material.003",
         materials: materials,
-        id: "BackPlate",
+        name: "Cube002",
+        id: 2,
       },
     ];
 
-  const changePartMaterial = (name: string, color: string) => {
-    console.log(name, color);
-    setMaterialSelected({ ...materialSelected, [name]: color });
-  };
 
   const onSizeSelect = (id: number) => {
     setSizeSelected(id);
   };
 
-  const Model = (props: JSX.IntrinsicElements["primitive"]) => {
-    const ref = useRef<Three.Mesh>(null!);
 
-    const mat = useLoader(MTLLoader, "/blocks.mtl");
-    console.log(mat);
-    const obj = useLoader(OBJLoader, "/blocks.obj", (loader) => {
-      for (const key in materialSelected) {
-        mat.materials[key] = new MeshPhongMaterial({
-          color: new Color(`#${materialSelected[key]}`),
-        });
+  const Model = (props: {parts : { materialName: string, name: string; materials: MaterialInterface[]; id: number }[]}) => {
+    const group = useRef<group>(null!);
+    const { nodes, materials } = useGLTF("/blocks.gltf");
+    console.log(nodes);
+    return (
+      <group ref={group}  scale={1} >
+      {
+        props.parts.map((part) => {
+          console.log(materialSelected);
+          return (<mesh geometry={nodes[part.name].geometry} position={nodes[part.name].position}>
+          <meshStandardMaterial name={"Material.001"} color={`#${materialSelected[part.id]}`} />
+          </mesh>
+          )
+        })
       }
-      mat.preload();
-      loader.setMaterials(mat);
-    });
-    return <primitive ref={ref} object={obj} scale={1} />;
+       </group>
+      
+      )
   };
 
   const stepList: {
@@ -160,13 +157,13 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       action: (
         <div className="m-2 grid grid-cols-2">
           <div className="m-3 rounded-md bg-muted">
-            <Canvas className="h-full w-full">
-              <Suspense fallback={null}>
-                <Model />
+            <Canvas>
+             
+                <Model parts={parts} />
                 <OrbitControls />
-                <Environment preset="city" />
+                
                 <ambientLight />
-              </Suspense>
+              
             </Canvas>
           </div>
           <div className="m-3">
@@ -183,9 +180,8 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
                           <Material
                             key={`${part.id}-${material.title}-${j}`}
                             material={material}
-                            onSelect={() =>
-                              changePartMaterial(part.name, material.display)
-                            }
+                            onSelect={() => setMaterialSelected(materialSelected.map((item, i) => part.id === i ? material.display : item))}
+
                           />
                         );
                       })}
@@ -226,6 +222,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
         </div>
         <Separator />
       </div>
+      
       <ul>
         {stepList.map((step, i) => {
           return (
