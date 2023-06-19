@@ -50,31 +50,31 @@ model Product {
   image       String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  categoryId  String
   components  Component[]
   Addons      AddOn[]
-  Order       Order?      @relation(fields: [orderId], references: [id])
-  orderId     String?
+  categories  Category[]
+  price       Float       @default(999999)
+  orders      ProductOnOrder[]
 }
 
 model AddOn {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  basePrice   Decimal?
-  image       String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
-  Order       Order?    @relation(fields: [orderId], references: [id])
-  orderId     String?
+  id            String      @id @default(cuid())
+  name          String
+  description   String?
+  price         Float       @default(999999)
+  image         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  products      Product[]
+  orders        AddonOnOrder[]
 }
 
 model Category {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  products  Product[]
 }
 
 model Component {
@@ -94,11 +94,13 @@ model Order {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   user      User      @relation(fields: [userId], references: [id])
+  products  ProductOnOrder[]
+  addons    AddonOnOrder[]
   userId    String
-  products  Product[]
-  addons    AddOn[]
-  subtotal  Decimal?
-  discount  Decimal?
+  subtotal  Float    @default(0)
+  discount  Decimal? 
+
+  @@index([userId])
 }
 
 model Material {
@@ -108,7 +110,6 @@ model Material {
   hexColor             String?
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
-  basePrice            Decimal?
   MaterialsOnComponent MaterialsOnComponent[]
 }
 
@@ -116,11 +117,34 @@ model MaterialsOnComponent {
   id          String    @id @default(cuid())
   material    Material  @relation(fields: [materialId], references: [id])
   component   Component @relation(fields: [componentId], references: [id])
-  price       Decimal?
+  price       Float     @default(999999)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   materialId  String
   componentId String
+  discount  Decimal?    @default(0)
+}
+
+model ProductOnOrder {
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    order     Order     @relation(fields: [orderId], references: [id])
+    product   Product   @relation(fields: [productId], references: [id])
+    orderId   String
+    productId String
+    quantity  Int
+    @@id([orderId, productId])
+}
+
+model AddonOnOrder {
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    order    Order     @relation(fields: [orderId], references: [id])
+    addon    AddOn     @relation(fields: [addonId], references: [id])
+    orderId  String
+    addonId  String
+    quantity Int
+    @@id([orderId, addonId])
 }
 
 model User {
@@ -133,7 +157,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
-  Order         Order[]
+  orders         Order[]
 }
 
 model VerificationToken {
