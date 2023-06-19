@@ -116,8 +116,9 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
       {
         props.parts.map((part) => {
           console.log(materialSelected);
-          return (<mesh geometry={nodes[part.name].geometry} position={nodes[part.name].position}>
-          <meshStandardMaterial name={"Material.001"} color={`#${materialSelected[part.id]}`} />
+          return (
+          <mesh geometry={nodes[part.name].geometry} position={nodes[part.name].position}>
+            <meshStandardMaterial name={"Material.001"} color={`#${materialSelected[part.id]}`} />
           </mesh>
           )
         })
