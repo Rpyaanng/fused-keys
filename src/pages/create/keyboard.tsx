@@ -181,8 +181,7 @@ const KeyboardPage: NextPage<{ id: string }> = ({ id }) => {
                           <Material
                             key={`${part.id}-${material.title}-${j}`}
                             material={material}
-                            onSelect={() => setMaterialSelected(materialSelected.map((item, i) => part.id === i ? material.display : item))}
-
+                            onSelect={() => setMaterialSelected(materialSelected.map((item, i) => part.id === i ? material.display : item))} selected={false}
                           />
                         );
                       })}
