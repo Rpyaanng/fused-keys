@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export function FullSized(props: ComponentProps<"svg">) {
+export function FullSize(props: ComponentProps<"svg">) {
   return (
     <svg
       viewBox="0 0 309 92"
