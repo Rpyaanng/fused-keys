@@ -1,10 +1,13 @@
+import NextFunctionComponent from 'next';
 import { Button, Progress, Separator } from "~/components/ui"
 
-export const StepControl: React.FC<{
+type Props = {
     steps: number,
     currentStep: number,
-    setCurrentStep: React.Dispatch<React.SetStateAction<number>>
-}> = ({ steps, currentStep, setCurrentStep }) => {
+    setCurrentStep: any
+};
+
+export const StepControl: NextFunctionComponent<Props> = ({ steps, currentStep, setCurrentStep }) => {
 
     return (
         <>

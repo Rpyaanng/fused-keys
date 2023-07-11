@@ -2,11 +2,13 @@ import { SixtyFive } from './SixtyFive';
 import { Tenkeyless } from './Tenkeyless';
 import { FullSize } from './FullSized';
 
-export default {
-    keyboards: {
-        SixtyFive: <SixtyFive />,
-        Tenkeyless: <Tenkeyless />,
-        FullSize: <FullSize />
-    }
+const keyboards = {
+    "tbd": <SixtyFive />,
+    "clj38kina0000gnpiai43388u": <Tenkeyless />,
+    "clj36n6d70004tex5kp033v1w": <FullSize />
+}
+
+export {
+    keyboards
 }
 

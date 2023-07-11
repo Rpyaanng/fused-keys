@@ -1,18 +1,16 @@
 import * as React from "react";
-import type { ComponentProps } from "react";
 
 export const Item = (props: {
-    id: number;
     title: string;
     subtitle: string;
     features: Array<string> | undefined;
     display: React.ReactNode;
     selected: boolean;
-    onSelect: (id: number) => void;
+    onClick: () => void;
 }) => {
     return (
         <div
-            onClick={() => props.onSelect(props.id)}
+            onClick={() => props.onClick}
             className={
                 props.selected
                     ? "border-solid w-82 grid rounded-lg border-4 border-pop bg-muted p-2 md:grid-cols-1"
